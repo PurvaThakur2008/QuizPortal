@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="DevQuiz Pro - Master HTML, CSS, and JavaScript with interactive difficulty-based quizzes, live leaderboard, progress history, and teacher question bank.">
+    <title>DevQuiz Pro - Master HTML, CSS & JavaScript</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+
+<body>
+
+    <!-- Confetti Canvas for Victory Celebrations -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Header & Navigation -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand" id="brand-logo" title="Back to Quiz Hub">
+                <div class="brand-icon">⚡</div>
+                <div class="brand-info">
+                    <h1>DevQuiz Pro</h1>
+                    <span>Interactive Web Academy</span>
+                </div>
+            </div>
+
+            <!-- Navigation Tabs -->
+            <nav class="nav-tabs" aria-label="Main Navigation">
+                <button class="nav-tab-btn active" data-view="hub" id="tab-hub">
+                    <span class="tab-icon">🎯</span> Quiz Hub
+                </button>
+                <button class="nav-tab-btn" data-view="leaderboard" id="tab-leaderboard">
+                    <span class="tab-icon">🏆</span> Leaderboard
+                </button>
+                <button class="nav-tab-btn" data-view="history" id="tab-history">
+                    <span class="tab-icon">📜</span> History
+                </button>
+                <button class="nav-tab-btn" data-view="teacher" id="tab-teacher">
+                    <span class="tab-icon">👩‍🏫</span> Teacher Portal
+                </button>
+            </nav>
+
+            <!-- User & Sound Controls -->
+            <div class="header-actions">
+                <button class="icon-btn" id="sound-toggle-btn" title="Toggle Sound FX" aria-label="Toggle Sound">
+                    <span id="sound-icon">🔊</span>
+                </button>
+                <div class="user-badge" id="user-profile-badge" title="Click to Switch User / Role">
+                    <div class="user-avatar" id="header-user-avatar">👨‍💻</div>
+                    <div class="user-meta">
+                        <span class="user-name" id="header-user-name">Alex Dev</span>
+                        <span class="user-role-tag" id="header-user-role">Student</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="main-content">
+
+        <!-- ==========================================
+         VIEW 1: QUIZ HUB (SETUP & START)
+         ========================================== -->
+        <section class="view-section active" id="view-hub">
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <h2 id="hub-welcome-title">Welcome back, Alex! 👋</h2>
+                    <p>Level up your frontend engineering skills. Pick your domain, set your challenge, and see where
+                        you rank on the leaderboard!</p>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-pill">
+                        <span class="num" id="hub-stat-quizzes">0</span>
+                        <span class="label">Quizzes</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="num" id="hub-stat-score">0%</span>
+                        <span class="label">Avg Score</span>
+                    </div>
+                    <div class="stat-pill">
+                        <span class="num" id="hub-stat-streak">🔥 0</span>
+                        <span class="label">Streak</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <!-- Step 1: Choose Category -->
+                <div class="section-label">
+                    <span>1. Select Domain Category</span>
+                </div>
+                <div class="category-cards" id="hub-category-container">
+                    <div class="cat-card active" data-category="all" id="cat-all">
+                        <span class="icon">🚀</span>
+                        <span class="badge-count" id="count-all">0 Qs</span>
+                        <h3>Full Stack Mix</h3>
+                        <p>HTML5, CSS3 & JavaScript questions combined</p>
+                    </div>
+                    <div class="cat-card" data-category="html" id="cat-html">
+                        <span class="icon">🌐</span>
+                        <span class="badge-count" id="count-html">0 Qs</span>
+                        <h3>HTML5</h3>
+                        <p>Tags, DOM hierarchy, forms & semantic standards</p>
+                    </div>
+                    <div class="cat-card" data-category="css" id="cat-css">
+                        <span class="icon">🎨</span>
+                        <span class="badge-count" id="count-css">0 Qs</span>
+                        <h3>CSS3</h3>
+                        <p>Flexbox, Grid, specificity, animations & layouts</p>
+                    </div>
+                    <div class="cat-card" data-category="javascript" id="cat-js">
+                        <span class="icon">⚡</span>
+                        <span class="badge-count" id="count-js">0 Qs</span>
+                        <h3>JavaScript</h3>
+                        <p>ES6+, async/await, closures, prototypes & logic</p>
+                    </div>
+                </div>
+
+                <!-- Step 2: Choose Difficulty -->
+                <div class="section-label">
+                    <span>2. Choose Difficulty Level</span>
+                </div>
+                <div class="difficulty-selector" id="hub-difficulty-container">
+                    <button class="diff-btn active" data-diff="all" id="diff-all">
+                        <span>🔀</span> Mixed Levels
+                    </button>
+                    <button class="diff-btn" data-diff="easy" id="diff-easy">
+                        <span>🟢</span> Easy
+                    </button>
+                    <button class="diff-btn" data-diff="medium" id="diff-med">
+                        <span>🟡</span> Medium
+                    </button>
+                    <button class="diff-btn" data-diff="hard" id="diff-hard">
+                        <span>🔴</span> Hard
+                    </button>
+                </div>
+
+                <!-- Step 3: Options (Question count & Timer) -->
+                <div class="quiz-options-row">
+                    <div class="option-box">
+                        <div class="option-box-header">Number of Questions</div>
+                        <div class="pill-group" id="question-count-group">
+                            <button class="pill-btn active" data-count="5">5 Questions</button>
+                            <button class="pill-btn" data-count="10">10 Questions</button>
+                            <button class="pill-btn" data-count="all">All Available</button>
+                        </div>
+                    </div>
+                    <div class="option-box">
+                        <div class="option-box-header">Question Timer</div>
+                        <div class="pill-group" id="timer-mode-group">
+                            <button class="pill-btn active" data-timer="15">15s / Question</button>
+                            <button class="pill-btn" data-timer="30">30s / Question</button>
+                            <button class="pill-btn" data-timer="0">No Timer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Launch Button -->
+                <button class="btn btn-primary btn-full" id="start-quiz-btn" style="font-size: 17px; padding: 16px;">
+                    <span>🚀</span> Start Quiz Challenge
+                </button>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         VIEW 2: ACTIVE QUIZ VIEW
+         ========================================== -->
+        <section class="view-section" id="view-quiz">
+            <div class="quiz-container">
+
+                <!-- Header status -->
+                <div class="quiz-header-bar">
+                    <div class="quiz-meta-tags">
+                        <span class="badge badge-all" id="quiz-cat-badge">HTML5</span>
+                        <span class="badge badge-easy" id="quiz-diff-badge">EASY</span>
+                    </div>
+                    <div class="timer-pill" id="quiz-timer-pill">
+                        <span>⏱️</span>
+                        <span id="quiz-timer-text">15s</span>
+                    </div>
+                </div>
+
+                <!-- Visual Progress Bar -->
+                <div class="quiz-progress-track">
+                    <div class="quiz-progress-fill" id="quiz-progress-fill"></div>
+                </div>
+
+                <!-- Question Card -->
+                <div class="card question-card">
+                    <div class="question-counter" id="quiz-q-counter">Question 1 of 5</div>
+                    <h2 class="question-title" id="quiz-q-title">Question loading...</h2>
+
+                    <!-- Options Grid -->
+                    <div class="quiz-options" id="quiz-options-container">
+                        <!-- Dynamic Option Buttons -->
+                    </div>
+
+                    <!-- Explanation Box (Appears after answering) -->
+                    <div class="explanation-box" id="quiz-explanation-box">
+                        <div class="explanation-title">
+                            <span>💡</span> Explanation & Concept
+                        </div>
+                        <div class="explanation-text" id="quiz-explanation-text">
+                            Explanation will appear here.
+                        </div>
+                    </div>
+
+                    <!-- Footer Actions -->
+                    <div class="quiz-footer">
+                        <button class="btn btn-secondary btn-sm" id="quiz-quit-btn">Quit Quiz</button>
+                        <button class="btn btn-primary" id="quiz-next-btn" style="display: none;">Next Question
+                            ➔</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         VIEW 3: RESULTS SCREEN
+         ========================================== -->
+        <section class="view-section" id="view-results">
+            <div class="results-container">
+                <div class="card">
+                    <!-- Circular Score SVG -->
+                    <div class="score-circle-wrapper">
+                        <svg class="score-circle-svg" viewBox="0 0 160 160">
+                            <defs>
+                                <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6366f1" />
+                                    <stop offset="50%" stop-color="#8b5cf6" />
+                                    <stop offset="100%" stop-color="#10b981" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="score-circle-bg" cx="80" cy="80" r="70" />
+                            <circle class="score-circle-bar" id="score-circle-bar" cx="80" cy="80" r="70" />
+                        </svg>
+                        <div class="score-circle-content">
+                            <div class="score-percent" id="res-score-percent">0%</div>
+                            <div class="score-fraction" id="res-score-fraction">0 / 0</div>
+                        </div>
+                    </div>
+
+                    <h2 class="results-title" id="res-title">Quiz Completed! 🎉</h2>
+                    <p class="results-desc" id="res-desc">Here is how you performed on this challenge.</p>
+
+                    <!-- Result Stat Metrics -->
+                    <div class="result-stats-row">
+                        <div class="r-stat-card">
+                            <span class="val" id="res-stat-correct" style="color: #34d399;">0</span>
+                            <span class="lbl">Correct</span>
+                        </div>
+                        <div class="r-stat-card">
+                            <span class="val" id="res-stat-wrong" style="color: #f87171;">0</span>
+                            <span class="lbl">Incorrect</span>
+                        </div>
+                        <div class="r-stat-card">
+                            <span class="val" id="res-stat-time">0s</span>
+                            <span class="lbl">Time Taken</span>
+                        </div>
+                        <div class="r-stat-card">
+                            <span class="val" id="res-stat-speed">0s</span>
+                            <span class="lbl">Avg / Question</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" id="res-retry-btn">🔄 Try Another Quiz</button>
+                        <button class="btn btn-secondary" id="res-leaderboard-btn">🏆 View Leaderboard</button>
+                        <button class="btn btn-secondary" id="res-history-btn">📜 View History</button>
+                    </div>
+
+                    <!-- Answer Breakdown / Review -->
+                    <div class="review-section">
+                        <h3 class="card-title" style="font-size: 17px;">
+                            <span>📝</span> Review Answers
+                        </h3>
+                        <div class="review-list" id="res-review-list">
+                            <!-- Dynamically populated answer review items -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         VIEW 4: LEADERBOARD SCREEN
+         ========================================== -->
+        <section class="view-section" id="view-leaderboard">
+            <div class="card">
+                <h2 class="card-title">
+                    <span>🏆</span> Global Leaderboard
+                </h2>
+                <p class="card-subtitle">Real-time developer rankings across all quizzes.</p>
+
+                <!-- Category Filters -->
+                <div class="leaderboard-filters" id="leaderboard-filters">
+                    <button class="filter-pill active" data-cat="all">All Domains</button>
+                    <button class="filter-pill" data-cat="html">HTML5</button>
+                    <button class="filter-pill" data-cat="css">CSS3</button>
+                    <button class="filter-pill" data-cat="javascript">JavaScript</button>
+                </div>
+
+                <!-- Top 3 Podium -->
+                <div class="podium-container" id="leaderboard-podium">
+                    <!-- Dynamic Podium Elements -->
+                </div>
+
+                <!-- Rankings Table -->
+                <div class="table-wrapper">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Developer</th>
+                                <th>Category</th>
+                                <th>Difficulty</th>
+                                <th>Score</th>
+                                <th>Accuracy</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-tbody">
+                            <!-- Dynamically populated rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         VIEW 5: ATTEMPTS HISTORY SCREEN
+         ========================================== -->
+        <section class="view-section" id="view-history">
+            <div class="history-stats-banner">
+                <div class="h-stat-box">
+                    <div class="number" id="h-total-attempts">0</div>
+                    <div class="title">Total Attempts</div>
+                </div>
+                <div class="h-stat-box">
+                    <div class="number" id="h-avg-accuracy" style="color: #34d399;">0%</div>
+                    <div class="title">Average Accuracy</div>
+                </div>
+                <div class="h-stat-box">
+                    <div class="number" id="h-best-score" style="color: #fbbf24;">0%</div>
+                    <div class="title">Personal Best</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <h2 class="card-title">
+                            <span>📜</span> Quiz Attempt History
+                        </h2>
+                        <p class="card-subtitle" style="margin-bottom: 0;">Review your previous test runs and track your
+                            improvement.</p>
+                    </div>
+                    <button class="btn btn-danger btn-sm" id="clear-history-btn">🗑️ Clear History</button>
+                </div>
+
+                <div class="table-wrapper">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Domain</th>
+                                <th>Difficulty</th>
+                                <th>Score</th>
+                                <th>Accuracy</th>
+                                <th>Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-tbody">
+                            <!-- Dynamically populated rows -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="history-empty" class="empty-state" style="display: none;">
+                    <span class="icon">🚀</span>
+                    <h3>No Quizzes Taken Yet</h3>
+                    <p>Head to the Quiz Hub, complete your first quiz, and your performance log will show up here!</p>
+                    <button class="btn btn-primary btn-sm" style="margin-top: 14px;" onclick="switchView('hub')">Take a
+                        Quiz Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+         VIEW 6: TEACHER PORTAL SCREEN
+         ========================================== -->
+        <section class="view-section" id="view-teacher">
+
+            <!-- Teacher Gate / Auth Screen (if logged in as student) -->
+            <div id="teacher-locked-card" class="card"
+                style="max-width: 500px; margin: 40px auto; text-align: center; display: none;">
+                <span style="font-size: 56px; display: block; margin-bottom: 16px;">🔐</span>
+                <h2 class="card-title" style="justify-content: center;">Teacher Portal Access</h2>
+                <p class="card-subtitle">Please sign in with teacher credentials or enter the Teacher PIN to manage
+                    questions.</p>
+
+                <div class="form-group" style="text-align: left; margin: 20px 0;">
+                    <label class="form-label" for="teacher-pin-input">Teacher Passcode / PIN</label>
+                    <input type="password" id="teacher-pin-input" class="form-input"
+                        placeholder="Enter PIN (Default: teacher123)">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                        💡 Hint: Default passcode is <code>teacher123</code>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-full" id="teacher-unlock-btn">
+                    <span>🔓</span> Unlock Teacher Portal
+                </button>
+            </div>
+
+            <!-- Teacher Dashboard (Unlocked) -->
+            <div id="teacher-unlocked-content">
+                <!-- Banner Stats -->
+                <div class="hero-banner" style="margin-bottom: 24px;">
+                    <div class="hero-text">
+                        <h2>Teacher Dashboard 👩‍🏫</h2>
+                        <p>Add new questions, customize difficulty and categories, and manage the live question bank for
+                            your students.</p>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-pill">
+                            <span class="num" id="teacher-total-qs">0</span>
+                            <span class="label">Total Qs</span>
+                        </div>
+                        <div class="stat-pill">
+                            <span class="num" id="teacher-custom-qs">0</span>
+                            <span class="label">Custom Added</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="teacher-grid">
+                    <!-- Left: Add Question Form -->
+                    <div class="card">
+                        <h3 class="card-title">
+                            <span>➕</span> Add New Question
+                        </h3>
+                        <p class="card-subtitle">Create a new question to immediately enrich the quiz bank.</p>
+
+                        <form id="add-question-form">
+                            <!-- Question Text -->
+                            <div class="form-group">
+                                <label class="form-label" for="q-input-text">Question Prompt *</label>
+                                <textarea id="q-input-text" class="form-textarea" rows="3"
+                                    placeholder="e.g. Which HTML tag is used to embed an SVG image?"
+                                    required></textarea>
+                            </div>
+
+                            <!-- Category & Difficulty Row -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="q-input-category">Category *</label>
+                                    <select id="q-input-category" class="form-select" required>
+                                        <option value="html">HTML5</option>
+                                        <option value="css">CSS3</option>
+                                        <option value="javascript">JavaScript</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="q-input-diff">Difficulty *</label>
+                                    <select id="q-input-diff" class="form-select" required>
+                                        <option value="easy">Easy</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- 4 Options & Correct Answer Radio -->
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Options & Correct Answer * <span
+                                        style="font-weight: 400; color: var(--text-muted);">(Select radio for correct
+                                        option)</span>
+                                </label>
+                                <div class="options-input-group">
+                                    <div class="option-input-item">
+                                        <input type="radio" name="correctOption" value="0" id="corr-opt-0" checked>
+                                        <span class="opt-tag">A.</span>
+                                        <input type="text" id="q-opt-0" placeholder="Option A text" required>
+                                    </div>
+                                    <div class="option-input-item">
+                                        <input type="radio" name="correctOption" value="1" id="corr-opt-1">
+                                        <span class="opt-tag">B.</span>
+                                        <input type="text" id="q-opt-1" placeholder="Option B text" required>
+                                    </div>
+                                    <div class="option-input-item">
+                                        <input type="radio" name="correctOption" value="2" id="corr-opt-2">
+                                        <span class="opt-tag">C.</span>
+                                        <input type="text" id="q-opt-2" placeholder="Option C text" required>
+                                    </div>
+                                    <div class="option-input-item">
+                                        <input type="radio" name="correctOption" value="3" id="corr-opt-3">
+                                        <span class="opt-tag">D.</span>
+                                        <input type="text" id="q-opt-3" placeholder="Option D text" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Explanation -->
+                            <div class="form-group">
+                                <label class="form-label" for="q-input-explanation">Explanation / Note</label>
+                                <textarea id="q-input-explanation" class="form-textarea" rows="2"
+                                    placeholder="Why this is the correct answer (shown in results & feedback)..."></textarea>
+                            </div>
+
+                            <!-- Form Buttons -->
+                            <div style="display: flex; gap: 10px;">
+                                <button type="submit" class="btn btn-primary" style="flex: 1;">
+                                    <span>💾</span> Save to Question Bank
+                                </button>
+                                <button type="reset" class="btn btn-secondary btn-sm">Clear</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Right: Question Bank Manager -->
+                    <div class="card">
+                        <div
+                            style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px;">
+                            <div>
+                                <h3 class="card-title">
+                                    <span>📚</span> Question Bank (<span id="bank-count-indicator">0</span>)
+                                </h3>
+                            </div>
+                            <button class="btn btn-danger btn-sm" id="reset-bank-btn"
+                                title="Reset to original default questions">
+                                Reset Defaults
+                            </button>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="bank-controls">
+                            <input type="text" id="bank-search-input" class="form-input search-input"
+                                placeholder="🔍 Search questions...">
+                            <select id="bank-filter-cat" class="form-select" style="width: auto;">
+                                <option value="all">All Domains</option>
+                                <option value="html">HTML</option>
+                                <option value="css">CSS</option>
+                                <option value="javascript">JavaScript</option>
+                            </select>
+                            <select id="bank-filter-diff" class="form-select" style="width: auto;">
+                                <option value="all">All Difficulties</option>
+                                <option value="easy">Easy</option>
+                                <option value="medium">Medium</option>
+                                <option value="hard">Hard</option>
+                            </select>
+                        </div>
+
+                        <!-- Bank Items List -->
+                        <div class="bank-items-list" id="bank-items-list">
+                            <!-- Dynamically populated question cards with delete buttons -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+       LOGIN / ROLE SWITCHER MODAL
+       ========================================== -->
+    <div class="modal-overlay" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-dialog">
+            <div class="modal-header">
+                <h3 id="modal-title">Select User Profile</h3>
+                <button class="modal-close-btn" id="modal-close-btn" aria-label="Close Modal">&times;</button>
+            </div>
+
+            <!-- Role Tabs (Student vs Teacher) -->
+            <div class="role-tabs">
+                <button class="role-tab-btn active" id="modal-tab-student" data-role="student">👨‍🎓 Student</button>
+                <button class="role-tab-btn" id="modal-tab-teacher" data-role="teacher">👩‍🏫 Teacher</button>
+            </div>
+
+            <!-- Student Login Form -->
+            <div id="modal-student-form">
+                <div class="form-group">
+                    <label class="form-label" for="student-name-input">Your Display Name</label>
+                    <input type="text" id="student-name-input" class="form-input"
+                        placeholder="e.g. Alex Dev, Sarah, CodeMaster" maxlength="20">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Choose Avatar</label>
+                    <div class="avatar-picker-grid" id="avatar-picker">
+                        <button type="button" class="avatar-choice selected" data-avatar="👨‍💻">👨‍💻</button>
+                        <button type="button" class="avatar-choice" data-avatar="👩‍💻">👩‍💻</button>
+                        <button type="button" class="avatar-choice" data-avatar="⚡">⚡</button>
+                        <button type="button" class="avatar-choice" data-avatar="🚀">🚀</button>
+                        <button type="button" class="avatar-choice" data-avatar="🦊">🦊</button>
+                        <button type="button" class="avatar-choice" data-avatar="🐱">🐱</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-full" id="student-login-submit">
+                    <span>🚀</span> Continue as Student
+                </button>
+            </div>
+
+            <!-- Teacher Login Form -->
+            <div id="modal-teacher-form" style="display: none;">
+                <div class="form-group">
+                    <label class="form-label" for="teacher-name-input">Teacher / Instructor Name</label>
+                    <input type="text" id="teacher-name-input" class="form-input"
+                        placeholder="e.g. Prof. Alan, Ms. Sharma" value="Prof. Alan" maxlength="25">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="modal-teacher-pin">Passcode / PIN</label>
+                    <input type="password" id="modal-teacher-pin" class="form-input"
+                        placeholder="Default passcode: teacher123">
+                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 6px;">
+                        💡 Passcode hint: <code>teacher123</code>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-full" id="teacher-login-submit">
+                    <span>👩‍🏫</span> Sign In as Teacher
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
